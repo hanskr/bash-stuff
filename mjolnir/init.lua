@@ -97,7 +97,7 @@ local layout2 = {
   ["IntelliJ IDEA"] = {{2, gobig}},
   ["Microsoft Outlook"] = {{1, gobig}},
   Spotify = {{1, gobig}},
-  ["Google Chrome"] = {{1, gobig},{2, gobig}}
+  ["Google Chrome"] = {{2, gobig},{1, gobig}}
 }
 
 definitions = {
