@@ -13,6 +13,8 @@ local sw = require "mjolnir._asm.watcher.screen"
 
 local definitions = nil
 local hyper = nil
+local layoutApplier = nil
+local lastScreens = nil
 
 local gridset = function(frame)
 	return function()
@@ -43,15 +45,24 @@ function applyLayout(layout1, layout2)
   return function()
     local screens = screen:allscreens()
     local layout = nil
-    if # screens == 1 then layout = layout1 else layout = layout2 end
-    for appName, place in pairs(layout) do
-      local app = appfinder.app_from_name(appName)
-      if app then
-        for i, win in ipairs(app:allwindows()) do
-          if i <= # place then
-            applyPlace(win, place[i])
-          else
-            applyPlace(win, place[1])
+    if # screens == 1 and lastScreens ~= 1 then 
+      layout = layout1 
+      lastScreens = 1
+    end
+    if # screens == 2 and lastScreens ~= 2 then 
+      layout = layout2 
+      lastScreens = 2
+    end
+    if layout then
+      for appName, place in pairs(layout) do
+        local app = appfinder.app_from_name(appName)
+        if app then
+          for i, win in ipairs(app:allwindows()) do
+            if i <= # place then
+              applyPlace(win, place[i])
+            else
+              applyPlace(win, place[1])
+            end
           end
         end
       end
